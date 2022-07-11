@@ -1,0 +1,12 @@
+.env
+audit/
+project_data.csv
+data.csv
+names.csv
+changed_projects.csv
+new_projects.csv
+__pycache__/
+Include/
+venv/
+Lib/
+Scripts
