@@ -22,10 +22,10 @@ def rename_columns(data):
     return data
     
 def get_names(data):
-    id = data['Last Modified By'].unique()
+    id = data['Last Modified By'].unique() #get unique values
     for i in id:
-        name = sf.query("SELECT Name FROM i360__Staff__c WHERE i360__User__c = '"+i+"'")
-        data.loc[data['Last Modified By'] == i, 'Last Modified By'] = name['records'][0]['Name']
+        name = sf.query("SELECT Name FROM i360__Staff__c WHERE i360__User__c = '"+i+"'") #get name from salesforce
+        data.loc[data['Last Modified By'] == i, 'Last Modified By'] = name['records'][0]['Name'] #replace value
     
     return data
     
@@ -34,9 +34,9 @@ def get_names(data):
 
 def get_new_projects(new):
     old_data = pd.read_csv('data.csv') #read data from csv
-    for index, row in old_data.iterrows():
-        if row['Project Number'] in new['Project Number'].values:
-            new = new[new['Project Number'] != row['Project Number']]
+    for index, row in old_data.iterrows(): #iterate through data
+        if row['Project Number'] in new['Project Number'].values: #if project number is in new data
+            new = new[new['Project Number'] != row['Project Number']] #remove old projects from new data
     # new['Install Date'] = pd.to_datetime(new['Install Date']).dt.strftime('%m-%d-%y:%H:%M') #convert install date to datetim
     return new
 
