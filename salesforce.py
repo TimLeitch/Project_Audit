@@ -18,7 +18,7 @@ def get_data(soql):
     return data
 
 def rename_columns(data):
-    data.rename(columns={'i360__Project_Number__c':'Project Number','supportworks__Install_Date__c':'Install Date','i360__Customer_Name__c':'Customer Name','i360__Market_Segment__c':'Market Segment','i360__Status__c':'Status','LastModifiedById': 'Last Modified By'}, inplace=True)
+    data.rename(columns={'i360__Project_Number__c':'Project Number','supportworks__Install_Date__c':'Install Date','i360__Customer_Name__c':'Customer Name','i360__Market_Segment__c':'Market Segment','i360__Status__c':'Status'}, inplace=True)
     return data
     
 def get_names(data):
@@ -46,10 +46,14 @@ def get_changed_projects(new):
     
     new_projects = pd.read_csv('new_projects.csv') #read data from csv
         
-    changed = pd.concat([old_data, new], sort=False).drop_duplicates(keep=False) #concatenate old and new data
+    changed = pd.concat([old_data, new], sort=False).drop_duplicates(subset=new.columns.difference(['Last Modified By']),keep=False) #concatenate old and new data
     changed = changed.drop_duplicates(subset=['Project Number'], keep='last') #drop duplicates
-    changed = pd.concat([changed, new_projects], sort=False).drop_duplicates(keep=False) #concatenate old and new data    
+    changed = pd.concat([changed, new_projects], sort=False).drop_duplicates(keep=False) #concatenate old and new data 
+       
     return changed
+
+
+
             
 def update_datetime(data):
     data['Install Date'] = pd.to_datetime(data['Install Date']).dt.strftime('%m-%d-%y : %H:%M') #convert install date to datetime

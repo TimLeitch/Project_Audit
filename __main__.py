@@ -13,12 +13,12 @@ def get_search_date(): #
     date = str(search_date) + "T00:00:00.000Z" #convert date to string
     return date
 
-query = "SELECT i360__Project_Number__c,supportworks__Install_Date__c,i360__Customer_Name__c,i360__Market_Segment__c,i360__Status__c,LastModifiedById FROM i360__Project__c WHERE supportworks__Install_Date__c >= "+get_search_date()+" AND i360__Status__c != 'Completed' ORDER BY supportworks__Install_Date__c ASC"
+query = "SELECT i360__Project_Number__c,supportworks__Install_Date__c,i360__Customer_Name__c,i360__Market_Segment__c,i360__Status__c FROM i360__Project__c WHERE supportworks__Install_Date__c >= "+get_search_date()+" AND i360__Status__c != 'Completed' ORDER BY supportworks__Install_Date__c ASC"
 
 def __main__():
     data = sf.get_data(query)   
     data = sf.rename_columns(data)
-    data = sf.get_names(data)
+    # data = sf.get_names(data)
     
     new_projects = sf.get_new_projects(data)
     new_projects.to_csv('new_projects.csv', index=False)
